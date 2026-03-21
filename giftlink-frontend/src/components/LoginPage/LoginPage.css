@@ -1,0 +1,30 @@
+/* Center the login card */
+.login-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Improve input fields */
+.login-card input {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Button styling */
+.login-card .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+}
+
+/* Button hover */
+.login-card .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Optional: full page background */
+body {
+    background-color: #f5f7fa;
+}
