@@ -25,6 +25,7 @@ connectToDatabase()
 // Route files
 const giftRoutes = require('./routes/giftRoutes');
 const searchRoutes = require('./routes/searchRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Logger middleware
 const pinoHttp = require('pino-http');
@@ -34,7 +35,7 @@ app.use(pinoHttp({ logger }));
 // Use Routes
 app.use('/api/gifts', giftRoutes);
 app.use('/api/search', searchRoutes);
-
+app.use('/api/auth', authRoutes);
 // Root route
 app.get("/", (req, res) => {
     res.send("Inside the server");
