@@ -1,17 +1,55 @@
 import React, { useState } from 'react';
 import './RegisterPage.css';
+import { urlConfig } from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
-    // Task 4: States
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    // Task 5: Handle register
-    const handleRegister = () => {
-        console.log("Register clicked");
-        console.log({ firstName, lastName, email, password });
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
+
+    const handleRegister = async () => {
+        try {
+            setError('');
+
+            const response = await fetch(`${urlConfig.backendUrl}/api/auth/register`, {
+                method: 'POST', // Task 6
+                headers: {
+                    'Content-Type': 'application/json' // Task 7
+                },
+                body: JSON.stringify({ // Task 8
+                    firstName,
+                    lastName,
+                    email,
+                    password
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.message || "Registration failed");
+                return;
+            }
+
+            // Save token
+            sessionStorage.setItem('auth-token', data.authtoken);
+
+            // Update global state
+            setIsLoggedIn(true);
+
+            // Redirect
+            navigate('/app');
+
+        } catch (err) {
+            setError("Something went wrong");
+        }
     };
 
     return (
@@ -19,7 +57,8 @@ function RegisterPage() {
             <div className="register-box">
                 <h2>Register</h2>
 
-                {/* Task 6: Inputs */}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+
                 <input
                     type="text"
                     placeholder="First Name"
@@ -48,7 +87,6 @@ function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                {/* Task 7: Button */}
                 <button onClick={handleRegister}>
                     Register
                 </button>
